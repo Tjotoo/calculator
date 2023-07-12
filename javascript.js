@@ -6,25 +6,54 @@ let operator = null;
 let operatorButtons = document.querySelectorAll(".operator-button")
 let numberButtons = document.querySelectorAll(".number-button")
 let input = document.querySelector(".input");
+let equalsButton = document.querySelector(".equals-button");
+let clearButton = document.querySelector(".clear-button");
+
 
 function getOperator() {
-    operatorButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            operator = button.innerText
-            input.innerText = operator;
-
-        });
-    });
-}
-
-function getNumberInput() {
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
-            displayValue = parseInt(button.innerText);
-            input.innerText = displayValue;
+            operator = button.innerText;
+            console.log(operator);
+            input.innerText = operator;
         });
     });
 }
+
+
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (operator !== null) {
+                secondNumber = parseFloat(button.innerText);
+                input.innerText = secondNumber;
+            } else {
+                firstNumber = parseFloat(button.innerText);
+                input.innerText = firstNumber;
+            }
+        });
+    });
+
+
+equalsButton.addEventListener('click', () => {
+    console.log("first number: " + firstNumber);
+    console.log("second number: " + secondNumber);
+    console.log("result " + operate(operator, firstNumber, secondNumber));
+    operator = null;
+});
+
+clearButton.addEventListener('click', () => { clear(); });
+
+
+function clear() {
+    firstNumber = "";
+    secondNumber = "";
+    operator = undefined;
+}
+
+// function appendNumber(number) {
+//     if (number === '.' && this.firstNumber.includes('.')) return
+//     this.firstNumber = this.firstNumber.toString() + number.toString()
+// }
 
 
 function add(a, b) {
@@ -61,9 +90,3 @@ function operate(operator, a, b) {
 
 }
 
-function populateDisplay() {
-    getNumberInput();
-    getOperator()
-}
-
-populateDisplay();
