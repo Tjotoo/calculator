@@ -20,32 +20,33 @@
         <div class="calculator-container">
 
             <div class="calculator-screen">
-                <div class="input"></div>
+                <div class="current-input"></div>
+                <div class="last-input"></div>
             </div>
 
             <div class="buttons-container">
                 <button class="number-button span-2 clear-button">CLEAR</button>
                 <button class="number-button span-2 delete-button">DELETE</button>
 
-                <button class="number-button">7</button>
-                <button class="number-button">8</button>
-                <button class="number-button">9</button>
-                <button class="number-button divide-button operator-button">÷</button>
+                <button class="number-button" data-number>7</button>
+                <button class="number-button" data-number>8</button>
+                <button class="number-button" data-number>9</button>
+                <button class="number-button divide-button operator-button" data-operator>÷</button>
 
-                <button class="number-button">4</button>
-                <button class="number-button">5</button>
-                <button class="number-button">6</button>
-                <button class="number-button multiply-button operator-button">×</button>
+                <button class="number-button" data-number>4</button>
+                <button class="number-button" data-number>5</button>
+                <button class="number-button" data-number>6</button>
+                <button class="number-button multiply-button operator-button" data-operator>×</button>
 
-                <button class="number-button">1</button>
-                <button class="number-button">2</button>
-                <button class="number-button">3</button>
-                <button class="number-button subtract-button operator-button">−</button>
+                <button class="number-button" data-number>1</button>
+                <button class="number-button" data-number>2</button>
+                <button class="number-button" data-number>3</button>
+                <button class="number-button subtract-button operator-button" data-operator>−</button>
 
-                <button class="number-button">.</button>
-                <button class="number-button">0</button>
+                <button class="number-button point-button">.</button>
+                <button class="number-button" data-number>0</button>
                 <button class="number-button equals-button">=</button>
-                <button class="number-button add-button operator-button">+</button>
+                <button class="number-button add-button operator-button" data-operator>+</button>
             </div>
 
         </div>

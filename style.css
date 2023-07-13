@@ -43,7 +43,15 @@ body {
     font-size: 40px;
 }
 
+.last-input {
+    min-height: 32px;
+    font-size: 20px;
+}
 
+.current-input {
+    min-height: 64px;
+    font-size: 40px;
+}
 
 
 .buttons-container {

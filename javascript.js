@@ -1,60 +1,86 @@
 let firstNumber = 0;
 let secondNumber = 0;
-let displayValue = 0;
-let operator = null;
+let currentOperation = null;
+let shouldResetScreen = false;
 
-let operatorButtons = document.querySelectorAll(".operator-button")
-let numberButtons = document.querySelectorAll(".number-button")
-let input = document.querySelector(".input");
+let numberButtons = document.querySelectorAll("[data-number]")
+let operatorButtons = document.querySelectorAll("[data-operator]")
 let equalsButton = document.querySelector(".equals-button");
 let clearButton = document.querySelector(".clear-button");
+let pointButton = document.querySelector(".point-button");
+let deleteButton = document.querySelector(".delete-button");
+let currentInput = document.querySelector(".current-input");
+let lastInput = document.querySelector(".last-input");
 
 
-function getOperator() {
-    numberButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            operator = button.innerText;
-            console.log(operator);
-            input.innerText = operator;
-        });
-    });
+equalsButton.addEventListener('click', evaluate);
+clearButton.addEventListener('click', clear);
+pointButton.addEventListener('click', addPoint);
+deleteButton.addEventListener('click', deleteNumber);
+
+function appendNumber(number) {
+    if (currentInput.textContent === '0' || shouldResetScreen)
+        clearScreen();
+    currentInput.textContent += number;
 }
 
+function addPoint() {
+    if (shouldResetScreen) clearScreen()
+    if (currentInput.textContent === '')
+        currentInput.textContent = '0'
+    if (currentInput.textContent.includes('.')) return
+    currentInput.textContent += '.'
+}
 
-    numberButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (operator !== null) {
-                secondNumber = parseFloat(button.innerText);
-                input.innerText = secondNumber;
-            } else {
-                firstNumber = parseFloat(button.innerText);
-                input.innerText = firstNumber;
-            }
-        });
-    });
+function deleteNumber() {
+    currentInput.textContent = currentInput.textContent.toString().slice(0, -1)
+}
 
+function clearScreen() {
+    currentInput.textContent = '';
+    shouldResetScreen = false;
+}
 
-equalsButton.addEventListener('click', () => {
-    console.log("first number: " + firstNumber);
-    console.log("second number: " + secondNumber);
-    console.log("result " + operate(operator, firstNumber, secondNumber));
-    operator = null;
-});
+numberButtons.forEach(button =>
+    button.addEventListener('click', () => appendNumber(button.textContent))
+);
 
-clearButton.addEventListener('click', () => { clear(); });
+operatorButtons.forEach(button =>
+    button.addEventListener('click', () => setOperation(button.textContent))
+);
 
+function setOperation(operator) {
+    if(currentOperation !== null) evaluate();
+    firstNumber = currentInput.textContent;
+    currentOperation = operator;
+    lastInput.textContent = `${firstNumber} ${currentOperation}`
+    shouldResetScreen = true;
+}
+
+function evaluate() {
+    if (currentOperation === null || shouldResetScreen) return
+    if (currentOperation === '÷' && currentInput.textContent === '0') {
+        alert("Can't divide by 0!")
+        return
+    }
+    secondNumber = currentInput.textContent;
+    currentInput.textContent = roundResult(operate(currentOperation, firstNumber, secondNumber));
+    console.log(roundResult(operate(currentOperation, firstNumber, secondNumber)));
+    lastInput.textContent = `${firstNumber} ${currentOperation} ${secondNumber} =`
+    currentOperation = null
+}
+
+function roundResult(number) {
+    return Math.round(number * 1000) / 1000
+}
 
 function clear() {
+    currentInput.textContent = '0';
+    lastInput.textContent = '';
     firstNumber = "";
     secondNumber = "";
-    operator = undefined;
+    currentOperation = null;
 }
-
-// function appendNumber(number) {
-//     if (number === '.' && this.firstNumber.includes('.')) return
-//     this.firstNumber = this.firstNumber.toString() + number.toString()
-// }
-
 
 function add(a, b) {
     return a + b;
@@ -80,13 +106,14 @@ function operate(operator, a, b) {
             return add(a, b)
         case '-':
             return subtract(a, b)
-        case '*':
+        case '×':
             return multiply(a, b)
-        case '/':
-            return divide(a, b)
+        case '÷':
+            if (b === 0) return null
+            else return divide(a, b)
         default:
             return null;
     }
-
 }
+
 
